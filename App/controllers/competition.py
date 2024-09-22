@@ -1,4 +1,4 @@
-from App.models import competition
+from App.models import Competition
 from App.database import db
 
 

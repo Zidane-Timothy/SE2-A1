@@ -1,5 +1,6 @@
-from App.models import User
+from App.models import User, Competition
 from App.database import db
+from App.models import competition
 
 def create_user(username, password):
     newuser = User(username=username, password=password)
@@ -30,4 +31,31 @@ def update_user(id, username):
         db.session.add(user)
         return db.session.commit()
     return None
-    
+
+
+# to be edited to accpet team names in the future
+def create_competition(username, name, date, loc, cost):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        print(f'{username} not found')
+        return
+
+    new_competition = Competition(name, date, loc, cost)
+    user.competitions.append(new_competition)
+    db.session.add(user)
+    db.session.commit()
+
+
+def get_user_competitions(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        # insert try here
+        print(f'{username} not found!')
+        return
+    print(user.competitions)
+
+# def get_user_competitions_json(username):
+#     return
+
+# def import_user_comp_csv():
+#     with open()
