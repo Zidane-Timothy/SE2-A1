@@ -7,6 +7,7 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)
     team_name = db.Column(db.String(50), nullable=True)
+    competitions = db.relationship('Competition', backref='user', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, username, password):
         self.username = username
