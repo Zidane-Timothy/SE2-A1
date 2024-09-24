@@ -1,5 +1,5 @@
 from App.database import db
-from sqlalchemy import DateTime
+# from sqlalchemy import DateTime
 
 
 class Competition(db.Model):
@@ -9,6 +9,7 @@ class Competition(db.Model):
     date = db.Column(db.String(20), unique=False, nullable=False)
     location = db.Column(db.String(170), unique=False, nullable=False)
     entry_cost = db.Column(db.Float, unique=False, nullable=True)
+    results = db.relationship('Result', backref='result', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name, date, location, entry_cost):
         self.name = name
