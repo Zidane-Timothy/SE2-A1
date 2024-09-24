@@ -25,8 +25,6 @@ def import_user_comp_results_csv(username, comp_name):
 
     print(comp)
 
-    results = Result.query.filter_by(comp_id=comp.id)
-
     res_file = input("Enter the results file name like this 'results.csv' ")
     with open(res_file, 'r') as res:
         reader = csv.DictReader(res)
@@ -35,8 +33,6 @@ def import_user_comp_results_csv(username, comp_name):
                              score=line['score'], rank=line['rank'],
                              category=line['category'],
                              notes=line['judges_comments'])
-            # user.competitions.results.append(results)
-            # print(user.competitions)
             db.session.add(result_row)
             comp.results.append(result_row)
     db.session.commit()
