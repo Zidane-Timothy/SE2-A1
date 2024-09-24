@@ -4,12 +4,14 @@ from App.database import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
+    username = db.Column(db.String(747), nullable=False, unique=True)
+    email = db.Column(db.String(120), nullable = False, unique=True)
     password = db.Column(db.String(120), nullable=False)
-    team_name = db.Column(db.String(50), nullable=True)
+    competitions = db.relationship('Competition', backref='user', lazy=True, cascade="all, delete-orphan")
 
-    def __init__(self, username, password):
+    def __init__(self, username, email, password):
         self.username = username
+        self.email = email
         self.set_password(password)
 
     def get_json(self):
@@ -25,3 +27,6 @@ class User(db.Model):
     def check_password(self, password):
         """Check hashed password."""
         return check_password_hash(self.password, password)
+
+    def __repr__(self):
+        return f'<User: {self.id} | {self.username}>'

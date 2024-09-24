@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User
+from App.models import User, Competition
 from App.controllers import (
     create_user,
     get_all_users_json,
@@ -27,7 +27,7 @@ class UserUnitTests(unittest.TestCase):
 
     # pure function no side effects or integrations called
     def test_get_json(self):
-        user = User("bob", "bobpass")
+        user = User("bob", "bob@mail.com", "bobpass")
         user_json = user.get_json()
         self.assertDictEqual(user_json, {"id":None, "username":"bob"})
     
