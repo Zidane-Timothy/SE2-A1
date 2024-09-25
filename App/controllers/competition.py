@@ -25,8 +25,6 @@ def import_user_comp_results_csv(username, comp_name):
 
     print(comp)
 
-    results = Result.query.filter_by(comp_id=comp.id)
-
     res_file = input("Enter the results file name like this 'results.csv' ")
     with open(res_file, 'r') as res:
         reader = csv.DictReader(res)
@@ -35,22 +33,24 @@ def import_user_comp_results_csv(username, comp_name):
                              score=line['score'], rank=line['rank'],
                              category=line['category'],
                              notes=line['judges_comments'])
-            # user.competitions.results.append(results)
-            # print(user.competitions)
+
             db.session.add(result_row)
             comp.results.append(result_row)
     db.session.commit()
     return
 
 
+
+def list_competition_result(username, comp_name):
+    user = User.query.filter_by(username=username).first()
+    comp = Competition.query.filter_by(name=comp_name, user_id=user.id).first()
+
+    if not comp.results:
 def list_competition_result(comp_name):
     comp = Competition.query.filter_by(name=comp_name).first()
-    # result = Result.query.filter_by(comp_id=comp.id).first()
-
-    # for res in result:
-    #     print(res.id)
 
     if not comp:
+
         print(f'could not find results for {comp_name}, try importing it first using that name')
         return
 

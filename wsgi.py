@@ -1,25 +1,30 @@
 import click, pytest, sys
-from flask import Flask
+# from flask import Flask
 from flask.cli import with_appcontext, AppGroup
 
-from App.database import db, get_migrate
-from App.models import User, Competition
+
+from App.database import get_migrate
 from App.main import create_app
-from App.controllers import (create_user, get_all_users_json, get_all_users, initialize)
-from App.controllers import (create_competition, get_user_competitions, import_user_comp_results_csv)
-from App.controllers import (list_competition_result, get_all_competitions)
+from App.controllers import (create_user, get_all_users_json, get_all_users,
+                             initialize)
+from App.controllers import (create_competition, get_user_competitions,
+                             import_user_comp_results_csv)
 
 
-# This commands file allow you to create convenient CLI commands for testing controllers
+# This commands file allow you to create convenient CLI commands for testing
+# controllers
 
 app = create_app()
 migrate = get_migrate(app)
 
 # This command creates and initializes the database
+
+
 @app.cli.command("init", help="Creates and initializes the database")
 def init():
     initialize()
     print('database intialized')
+
 
 '''
 User Commands
@@ -32,15 +37,22 @@ User Commands
 user_cli = AppGroup('user', help='User object commands')
 
 # Then define the command and any parameters and annotate it with the group (@)
+
+
 @user_cli.command("create", help="Creates a user")
 @click.argument("username", default="rob")
 @click.argument("email", default="rob@mail.com")
 @click.argument("password", default="robpass")
 def create_user_command(username, email, password):
-    create_user(username, email, password)
+
+    state = create_user(username, email, password)
+    if state is None:
+        print("User not created")
+        return
     print(f'{username} created!')
 
 # this command will be : flask user create bob bobpass
+
 
 @user_cli.command("list", help="Lists users in the database")
 @click.argument("format", default="string")
@@ -57,6 +69,7 @@ Test Commands
 '''
 
 test = AppGroup('test', help='Testing commands')
+
 
 @test.command("user", help="Run User tests")
 @click.argument("type", default="all")
@@ -76,7 +89,8 @@ Competition commands
 '''
 competition = AppGroup("competition", help='Competition commands')
 
-@competition.command("create_competition", help='Creates a user competition')
+
+@competition.command("create", help='Creates a user competition')
 @click.argument("username", default="rob")
 @click.argument("name", default="Code Runners")
 @click.argument("date", default="01/01/1970")  # change to be actual datetime at some point
@@ -96,10 +110,10 @@ def create_competition_command(username,  name, date, loc, cost):
 def list_user_competition_commands(username):
     print(get_user_competitions(username))
 
+
 @competition.command("list_all_competitions", help='lists all competitions')
 def list_all_competitions():
     print(get_all_competitions())
-
 
 
 app.cli.add_command(competition)  # add the group to the competitions cli
@@ -108,16 +122,18 @@ result = AppGroup('result', help='Result commands')
 
 
 @result.command("import_result", help='adds a list of results to a competition')
-
 @click.argument("username", default="rob")
 @click.argument("competition_name", default="Code Runners")
 def import_user_csv(username, competition_name):
     import_user_comp_results_csv(username, competition_name)
 
-@result.command("list_competition_results", help='list competition results')
+
+
+@result.command("list_results", help='list the results of a competition')
+@click.argument("username", default="rob")
 @click.argument("comp_name", default="Code Runners")
-def get_comp_result(comp_name):
-    # list_competition_result(comp_name)
-    list_competition_result(comp_name)
+def get_comp_result(username, comp_name):
+    list_competition_result(username, comp_name)
+
 
 app.cli.add_command(result)

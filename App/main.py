@@ -17,9 +17,11 @@ from App.controllers import (
 
 from App.views import views, setup_admin
 
+
 def add_views(app):
     for view in views:
         app.register_blueprint(view)
+
 
 def create_app(overrides={}):
     app = Flask(__name__, static_url_path='/static')

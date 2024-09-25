@@ -19,11 +19,6 @@ def get_user_by_username(username):
     # user = User.query.filter_by(username=username).first()
     return User.query.filter_by(username=username).first()
 
-    # if not user:
-    #     print(f'{username} not found')
-    #     return
-    # return user
-
 
 def get_user(id):
     return User.query.get(id)
