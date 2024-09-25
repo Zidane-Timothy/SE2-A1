@@ -5,6 +5,7 @@ class Result(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comp_id = db.Column(db.Integer, db.ForeignKey('competition.id'),
                         nullable=False)
+
     participant_name = db.Column(db.String(120), nullable=False)
     score = db.Column(db.Integer, nullable=False)
     rank = db.Column(db.Integer, nullable=False)

@@ -2,13 +2,13 @@ import click, pytest, sys
 # from flask import Flask
 from flask.cli import with_appcontext, AppGroup
 
+
 from App.database import get_migrate
 from App.main import create_app
 from App.controllers import (create_user, get_all_users_json, get_all_users,
                              initialize)
 from App.controllers import (create_competition, get_user_competitions,
                              import_user_comp_results_csv)
-from App.controllers import (list_competition_result, get_all_competitions)
 
 
 # This commands file allow you to create convenient CLI commands for testing
@@ -44,6 +44,7 @@ user_cli = AppGroup('user', help='User object commands')
 @click.argument("email", default="rob@mail.com")
 @click.argument("password", default="robpass")
 def create_user_command(username, email, password):
+
     state = create_user(username, email, password)
     if state is None:
         print("User not created")
@@ -60,7 +61,6 @@ def list_user_command(format):
         print(get_all_users())
     else:
         print(get_all_users_json())
-
 
 app.cli.add_command(user_cli)  # add the group to the cli
 
@@ -126,6 +126,7 @@ result = AppGroup('result', help='Result commands')
 @click.argument("competition_name", default="Code Runners")
 def import_user_csv(username, competition_name):
     import_user_comp_results_csv(username, competition_name)
+
 
 
 @result.command("list_results", help='list the results of a competition')

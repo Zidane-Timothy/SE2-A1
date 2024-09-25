@@ -33,10 +33,12 @@ def import_user_comp_results_csv(username, comp_name):
                              score=line['score'], rank=line['rank'],
                              category=line['category'],
                              notes=line['judges_comments'])
+
             db.session.add(result_row)
             comp.results.append(result_row)
     db.session.commit()
     return
+
 
 
 def list_competition_result(username, comp_name):
@@ -44,6 +46,11 @@ def list_competition_result(username, comp_name):
     comp = Competition.query.filter_by(name=comp_name, user_id=user.id).first()
 
     if not comp.results:
+def list_competition_result(comp_name):
+    comp = Competition.query.filter_by(name=comp_name).first()
+
+    if not comp:
+
         print(f'could not find results for {comp_name}, try importing it first using that name')
         return
 
