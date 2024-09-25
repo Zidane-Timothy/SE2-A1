@@ -78,6 +78,7 @@ def create_user_command(username, password):
 
 app.cli.add_command(user_cli) # add the group to the cli
 
+
 ```
 
 Then execute the command invoking with flask cli with command name and the relevant parameters
@@ -85,6 +86,109 @@ Then execute the command invoking with flask cli with command name and the relev
 ```bash
 $ flask user create bob bobpass
 ```
+
+# CLI commands implemented by student
+```
+Competition cli commands:
+  
+```
+```python
+@competition.command("create", help='Creates a student competition')
+@click.argument("username", default="rob")
+@click.argument("name", default="Code Runners")
+@click.argument("date", default="01/01/1970") 
+@click.argument("loc", default="Port-of-Spain")
+@click.argument("cost", default="0.00")
+def create_competition_command(username,  name, date, loc, cost):
+    state = None
+    state = create_competition(username,  name, date, loc, cost)
+    if state is not None:
+        print(f'{name} created!')
+    else:
+        print("Competition not created")
+
+```
+<!-- 
+creates a commpetition for a given student allowing a student to specify the details of the competition they partook in
+ -->
+```
+
+```
+bash 
+<!-- executing the commaand -->
+flask competition create rob "Code Runners" "01/09/1970" "New York" 100.00
+```
+```
+
+```python
+@competition.command("list_user_competition", help='lists users competitions')
+@click.argument("username", default=" rob")
+def list_user_competition_commands(username):
+    print(get_user_competitions(username))
+
+
+```
+<!-- gives a list of all the users competitions -->
+```
+
+```
+bash 
+<!-- executing the commaand -->
+flask list_user_competition rob
+```
+```
+
+```python
+@competition.command("list_all_competitions", help='lists all competitions')
+def list_all_competitions():
+    print(get_all_competitions())
+
+```
+<!-- gives a list of all competitions in the database -->
+```
+
+```
+bash
+<!-- executing the command -->
+flask competition list_all_competitions
+```
+
+
+```
+Results cli commands:
+
+```python
+@result.command("import_result", help='adds a list of results to a competition')
+@click.argument("username", default="rob")
+@click.argument("competition_name", default="Code Runners")
+def import_user_csv(username, competition_name):
+    import_user_comp_results_csv(username, competition_name)
+
+# allows a student to import the results of a competition they were in
+
+```
+bash
+<!-- executing the command -->
+flask result import_result rob "Code Runners"
+```
+```
+
+```python
+@result.command("list_results", help='list the results of a competition')
+@click.argument("username", default="rob")
+@click.argument("comp_name", default="Code Runners")
+def get_comp_result(username, comp_name):
+    list_competition_result(username, comp_name)
+
+# allows a student to view the results of a competition they were in
+
+```
+bash
+<!-- executing the command -->
+flask result list_results rob "Code Runners"
+```
+```
+
 
 
 # Running the Project
