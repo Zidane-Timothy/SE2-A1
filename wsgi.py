@@ -39,14 +39,14 @@ user_cli = AppGroup('user', help='User object commands')
 # Then define the command and any parameters and annotate it with the group (@)
 
 
-@user_cli.command("create", help="Creates a user")
+@user_cli.command("create", help="Creates a student")
 @click.argument("username", default="rob")
 @click.argument("email", default="rob@mail.com")
 @click.argument("password", default="robpass")
 def create_user_command(username, email, password):
     state = create_user(username, email, password)
     if state is None:
-        print("User not created")
+        print("Student not created")
         return
     print(f'{username} created!')
 
@@ -90,7 +90,7 @@ Competition commands
 competition = AppGroup("competition", help='Competition commands')
 
 
-@competition.command("create", help='Creates a user competition')
+@competition.command("create", help='Creates a student competition')
 @click.argument("username", default="rob")
 @click.argument("name", default="Code Runners")
 @click.argument("date", default="01/01/1970")  # change to be actual datetime at some point
