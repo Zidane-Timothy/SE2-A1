@@ -40,10 +40,15 @@ def import_user_comp_results_csv(username, comp_name):
     return
 
 
-def list_competition_result(comp_name):
-    comp = Competition.query.filter_by(name=comp_name).first()
+def list_competition_result(username, comp_name):
+    student = User.query.filter_by(username=username).first()
+    comp = Competition.query.filter_by(name=comp_name, user_id=student.id).first()
 
-    if not comp:
+    if comp is None:
+        print("Couldn't find a competition of that name")
+        return
+
+    if not comp.results:
 
         print(f'could not find results for {comp_name}, try importing it first using that name')
         return

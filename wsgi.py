@@ -1,5 +1,5 @@
 import click, pytest, sys
-# from flask import Flask
+from flask import Flask
 from flask.cli import with_appcontext, AppGroup
 
 
@@ -9,6 +9,7 @@ from App.controllers import (create_user, get_all_users_json, get_all_users,
                              initialize)
 from App.controllers import (create_competition, get_user_competitions,
                              import_user_comp_results_csv)
+from App.controllers import (get_all_competitions, list_competition_result)
 
 
 # This commands file allow you to create convenient CLI commands for testing
