@@ -40,12 +40,6 @@ def import_user_comp_results_csv(username, comp_name):
     return
 
 
-
-def list_competition_result(username, comp_name):
-    user = User.query.filter_by(username=username).first()
-    comp = Competition.query.filter_by(name=comp_name, user_id=user.id).first()
-
-    if not comp.results:
 def list_competition_result(comp_name):
     comp = Competition.query.filter_by(name=comp_name).first()
 
