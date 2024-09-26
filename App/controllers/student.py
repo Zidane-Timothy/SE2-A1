@@ -1,10 +1,10 @@
-from App.models import User, Competition, Result
+from App.models import Student, Competition, Result
 from App.database import db
 from sqlalchemy.exc import IntegrityError
 
 
 def create_user(username, email, password):
-    newuser = User(username=username, email=email, password=password)
+    newuser = Student(username=username, email=email, password=password)
     try:
         db.session.add(newuser)
         db.session.commit()
@@ -16,42 +16,42 @@ def create_user(username, email, password):
 
 
 def get_user_by_username(username):
-    # user = User.query.filter_by(username=username).first()
-    return User.query.filter_by(username=username).first()
+    # student = Student.query.filter_by(username=username).first()
+    return Student.query.filter_by(username=username).first()
 
 
 def get_user(id):
-    return User.query.get(id)
+    return Student.query.get(id)
 
 
 def get_all_users():
-    return User.query.all()
+    return Student.query.all()
 
 
 def get_all_users_json():
-    users = User.query.all()
+    users = Student.query.all()
     if not users:
         return []
-    users = [user.get_json() for user in users]
+    users = [student.get_json() for student in users]
     return users
 
 
 def update_user(id, username):
-    user = get_user(id)
-    if user:
-        user.username = username
-        db.session.add(user)
+    student = get_user(id)
+    if student:
+        student.username = username
+        db.session.add(student)
         return db.session.commit()
     return None
 
 
 # to be edited to accpet team names in the future
 def create_competition(username, name, date, loc, cost):
-    user = User.query.filter_by(username=username).first()
-    print(user)
-    if user is not None:
+    student = Student.query.filter_by(username=username).first()
+    print(student)
+    if student is not None:
         new_competition = Competition(name, date, loc, cost)
-        user.competitions.append(new_competition)
+        student.competitions.append(new_competition)
         db.session.add(new_competition)
         db.session.commit()
         return new_competition
@@ -61,9 +61,9 @@ def create_competition(username, name, date, loc, cost):
 
 
 def get_user_competitions(username):
-    user = User.query.filter_by(username=username).first()
-    if not user:
+    student = Student.query.filter_by(username=username).first()
+    if not student:
         # insert try here
         print(f'{username} not found!')
         return
-    print(user.competitions)
+    print(student.competitions)

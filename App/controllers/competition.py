@@ -1,4 +1,4 @@
-from App.models import Competition, Result, User
+from App.models import Competition, Result, Student
 from App.database import db
 import csv
 
@@ -12,12 +12,12 @@ def get_all_competitions():
 
 
 def import_user_comp_results_csv(username, comp_name):
-    user = User.query.filter_by(username=username).first()
-    if not user:
+    student = Student.query.filter_by(username=username).first()
+    if not student:
         print(f'{username} not found!')
         return
 
-    comp = Competition.query.filter_by(name=comp_name, user_id=user.id).first()
+    comp = Competition.query.filter_by(name=comp_name, user_id=student.id).first()
 
     if comp is None:
         print("competition does not exist")
@@ -30,10 +30,9 @@ def import_user_comp_results_csv(username, comp_name):
         reader = csv.DictReader(res)
         for line in reader:
             result_row = Result(compID=comp.id, name=line['participant_name'],
-                             score=line['score'], rank=line['rank'],
-                             category=line['category'],
-                             notes=line['judges_comments'])
-
+                                score=line['score'], rank=line['rank'],
+                                category=line['category'],
+                                notes=line['judges_comments'])
             db.session.add(result_row)
             comp.results.append(result_row)
     db.session.commit()
@@ -41,7 +40,11 @@ def import_user_comp_results_csv(username, comp_name):
 
 
 def list_competition_result(username, comp_name):
-    student = User.query.filter_by(username=username).first()
+    student = Student.query.filter_by(username=username).first()
+    if student is None:
+        print(f'Student: {username} not found')
+        return
+
     comp = Competition.query.filter_by(name=comp_name, user_id=student.id).first()
 
     if comp is None:
