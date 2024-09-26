@@ -4,7 +4,7 @@ from App.database import db
 
 class Competition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
     name = db.Column(db.String(100), unique=False, nullable=False)
     date = db.Column(db.String(20), unique=False, nullable=False)
     location = db.Column(db.String(170), unique=False, nullable=False)
