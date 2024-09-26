@@ -86,6 +86,81 @@ Then execute the command invoking with flask cli with command name and the relev
 $ flask user create bob bobpass
 ```
 
+# User Added Commands
+
+```python
+# inside wsgi.py
+
+
+'''
+Competition commands
+'''
+
+def create_competition_command(username,  name, date, loc, cost):
+    state = None
+    state = create_competition(username,  name, date, loc, cost)
+    if state is not None:
+        print(f'{name} created!')
+    else:
+        print("Competition not created")
+
+```
+creates a competition for a user
+
+```bash
+$ flask competition create bob "Code Runners" "01/02/2020" "New York" 500.00
+
+
+def list_user_competition_commands(username):
+    print(get_user_competitions(username))
+
+```
+list the competitions of a user
+
+```bash
+$ flask competition list_user_competitions bob 
+
+@competition.command("list_all_competitions", help='lists all competitions')
+def list_all_competitions():
+    print(get_all_competitions())
+
+```
+list all competitions in the competition class
+
+```bash
+$ flask competition list_all_competitions
+
+
+@click.argument("competition_name", default="Code Runners")
+def import_user_csv(username, competition_name):
+    import_user_comp_results_csv(username, competition_name)
+
+```
+imports the results of a user's competitions
+
+```bash
+$ flask result import_result
+
+@result.command("list_results", help='list the results of a competition')
+@click.argument("username", default="rob")
+@click.argument("comp_name", default="Code Runners")
+def get_comp_result(username, comp_name):
+    list_competition_result(username, comp_name)
+
+```
+list all results for a competition
+
+```bash
+$ flask result list_results
+
+
+
+
+
+```
+
+Then execute the command invoking with flask cli with command name and the relevant parameters
+
 
 # Running the Project
 
